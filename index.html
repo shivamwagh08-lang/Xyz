@@ -1,0 +1,66 @@
+<script>
+const subjects = [
+  { name: 'Professional Communication (Theory)', credit: 2 },
+  { name: 'Professional Communication (Practical)', credit: 1 },
+  { name: 'Chemistry (Theory)', credit: 3 },
+  { name: 'Chemistry (Practical)', credit: 1 },
+  { name: 'Mathematics-II (Theory)', credit: 4 },
+  { name: 'Photography / Drama (Practical)', credit: 1 },
+  { name: 'Engineering Graphics and Design (Theory)', credit: 2 },
+  { name: 'Engineering Graphics and Design (Practical)', credit: 2 },
+  { name: 'Engineering Thermodynamics and Mechanics (Theory)', credit: 3 },
+  { name: 'Engineering Thermodynamics and Mechanics (Practical)', credit: 1 },
+  { name: 'Introduction to Indian Knowledge System (Theory)', credit: 2 }
+];
+
+const grades = {
+  'A+': 10,
+  'A': 9,
+  'B+': 8,
+  'B': 7,
+  'C+': 6,
+  'C': 5,
+  'D+': 4,
+  'D': 3,
+  'E': 2,
+  'F': 1
+};
+
+const table = document.getElementById('subjectTable');
+
+subjects.forEach((subject, index) => {
+  const row = document.createElement('tr');
+
+  row.innerHTML = `
+    <td>${subject.name}</td>
+    <td>${subject.credit}</td>
+    <td>
+      <select id="grade-${index}">
+        <option value="">Select Grade</option>
+        ${Object.keys(grades).map(g =>
+          `<option value="${grades[g]}">${g}</option>`
+        ).join('')}
+      </select>
+    </td>
+  `;
+
+  table.appendChild(row);
+});
+
+function calculateSGPA() {
+  let totalCredits = 0;
+  let totalPoints = 0;
+
+  subjects.forEach((subject, index) => {
+    const grade =
+      parseFloat(document.getElementById(`grade-${index}`).value) || 0;
+
+    totalCredits += subject.credit;
+    totalPoints += grade * subject.credit;
+  });
+
+  const sgpa = (totalPoints / totalCredits).toFixed(2);
+
+  document.getElementById('sgpa').innerText = sgpa;
+}
+</script>
